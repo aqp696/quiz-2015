@@ -7,7 +7,10 @@
 	<body>
 		<h2>Quiz: el juego de las preguntas</h2>
 		
-		<%= respuesta =%>
-		<a href="/quizes/question">Intentelo otra vez</a>
+		<form method="get" action="/quizes/answer">
+			Pregunta: <%= pregunta %> <p>
+			<input type="text" name="respuesta" value="Responda aquí" />
+			<input type="submit" value="Enviar" />
+		</form>
 	</body>
 </html>
