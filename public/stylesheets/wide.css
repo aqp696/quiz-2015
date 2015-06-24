@@ -1,6 +1,7 @@
 body 				{ background: #999 }
 
 #page-wrap::after 	{ content: "Wide Layout" }
+.photo-carnet         { width: 64px; height: 64px; }
 
 nav 				{ float: left; width: 15%; height: 200px }
 nav span 			{ margin: 0px 100px 0px 0px; }

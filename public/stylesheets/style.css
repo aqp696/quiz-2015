@@ -4,7 +4,8 @@
 #page-wrap            { margin: 2% auto; color: white }
 #page-wrap > .main    { border: 1px solid #999; padding: 1%;
                         margin-bottom: 1px; color: black; }
-                     
+.photo-carnet         { width: 64px; height: 64px; padding: 1%; }
+
 section > div         { padding: 20px; }
 header, nav, section  { background: #eee; text-align: center; }
 footer                { background: #eee; text-align: center; } 
