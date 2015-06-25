@@ -1,5 +1,12 @@
 var models = require('../models/models.js');
 
+// GET /quizes
+exports.show = function (req, res) {
+	models.Quiz.findAll().then(function(quizes) {
+		res.render('quizes/index.ejs', { quizes: quizes });
+	});
+};
+
 // GET	/quizes/:id
 exports.show = function (req, res) {
 	models.Quiz.find(req.params.quizId).then(function(quiz) {
