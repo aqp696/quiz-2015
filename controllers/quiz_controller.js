@@ -1,7 +1,7 @@
 var models = require('../models/models.js');
 
 // GET /quizes
-exports.show = function (req, res) {
+exports.index = function (req, res) {
 	models.Quiz.findAll().then(function(quizes) {
 		res.render('quizes/index.ejs', { quizes: quizes });
 	});
