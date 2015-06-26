@@ -42,6 +42,16 @@ exports.answer = function (req, res) {
 	res.render('quizes/answer', { quiz: req.quiz, respuesta: resultado }); 
 };
 
+// GET /quizes/create
+exports.new = function (req, res) {
+	//crea objeto quiz
+	var quiz = models.Quiz.build(
+		{ pregunta: "Pregunta", respuesta: "Respuesta" }
+	);
+	
+	res.render('quizes/new', { quiz: quiz });
+};
+
 // GET /author
 exports.author = function (req, res) {
 	res.render('author', {autor: 'Adrián Queipo Pardo'});
