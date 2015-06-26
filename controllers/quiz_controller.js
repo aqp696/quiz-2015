@@ -13,7 +13,20 @@ exports.load = function (req, res, next, quizId) {
 
 // GET /quizes
 exports.index = function (req, res) {
+	var pattern_all = '%';
+	
+	var search = '';
 	if (req.query.search) {
+		search = '%' + req.query.search.replace(' ','%') + '%';
+	} else {
+		search = pattern_all;
+	}
+	
+	models.Quiz.findAll({where: ["pregunta like ?", search]}).then(function(quizes) {
+		res.render('quizes/index', {quizes: quizes});
+	}).catch(function(error) { next(error); });
+	
+	/*if (req.query.search) {
 		var search = '%' + req.query.search.replace(' ','%') + '%';
 		console.log(search);
 		console.log('tiene search!!');
@@ -25,7 +38,7 @@ exports.index = function (req, res) {
 		models.Quiz.findAll().then(function(quizes) {
 			res.render('quizes/index', { quizes: quizes });
 		}).catch(function(error) { next(error); }); 
-	}
+	}*/
 
 };
 
