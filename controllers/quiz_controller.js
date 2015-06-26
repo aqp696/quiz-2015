@@ -25,20 +25,6 @@ exports.index = function (req, res) {
 	models.Quiz.findAll({where: ["pregunta like ?", search]}).then(function(quizes) {
 		res.render('quizes/index', {quizes: quizes});
 	}).catch(function(error) { next(error); });
-	
-	/*if (req.query.search) {
-		var search = '%' + req.query.search.replace(' ','%') + '%';
-		console.log(search);
-		console.log('tiene search!!');
-		models.Quiz.findAll({where: ["pregunta like ?", search]}).then(function(quizes) {
-			res.render('quizes/index', {quizes: quizes});
-		}).catch(function(error) { next(error); });
-	}else{
-		console.log('no tiene search!!');
-		models.Quiz.findAll().then(function(quizes) {
-			res.render('quizes/index', { quizes: quizes });
-		}).catch(function(error) { next(error); }); 
-	}*/
 
 };
 
