@@ -54,7 +54,7 @@ exports.new = function (req, res) {
 
 // GET /quizes/create
 exports.create = function (req, res) {
-	var quiz = models.quiz.build ( req.body.quiz );
+	var quiz = models.Quiz.build ( req.body.quiz );
 	
 	quiz.validate().then(function(err) {
 		if (err) {
@@ -82,10 +82,10 @@ exports.update = function(req, res) {
 	
 	req.quiz.validate().then(function(err) {
 		if (err) {
-			res.render('quizes/edit', {quiz: rez.quiz, errors: err.errors});
+			res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
 		} else {
 			// save: guarda campos pregunta y respuesta en DB
-			req.quiz.save.({fields: ["pregunta","respuesta"]})
+			req.quiz.save({fields: ["pregunta","respuesta"]})
 			.then(function(){ res.redirect('/quizes');}); 
 				// Redirección HTTP a lista de preguntas (URL relativo)
 		}
