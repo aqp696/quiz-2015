@@ -75,6 +75,23 @@ exports.edit = function (req, res) {
 	res.render('quizes/edit', { quiz: quiz, errors: [] });
 }
 
+// PUT /quizes/:id
+exports.update = function(req, res) {
+	req.quiz.pregunta = req.body.quiz.pregunta;
+	req.quiz.respuesta = req.body.quiz.respuesta;
+	
+	req.quiz.validate().then(function(err) {
+		if (err) {
+			res.render('quizes/edit', {quiz: rez.quiz, errors: err.errors});
+		} else {
+			// save: guarda campos pregunta y respuesta en DB
+			req.quiz.save.({fields: ["pregunta","respuesta"]})
+			.then(function(){ res.redirect('/quizes');}); 
+				// Redirección HTTP a lista de preguntas (URL relativo)
+		}
+	});
+};
+
 // GET /author
 exports.author = function (req, res) {
 	res.render('author', {autor: 'Adrián Queipo Pardo'});
