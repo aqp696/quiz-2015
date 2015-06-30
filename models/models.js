@@ -39,9 +39,9 @@ var Categories = ['otro', 'humanidades', 'ocio', 'ciencia', 'tecnologia'];
 exports.Categories = Categories;
 
 // sequelize.sync() crea e inicializa tabla de preguntas DB
-sequelize.sync().success(function() {
+sequelize.sync().then(function() {
 	// success(..) ejecuta el manejador una vez creada la tabla
-	Quiz.count().success(function (count) {
+	Quiz.count().then(function (count) {
 		// la tabla se inicializa solo si está vacía
 		if (count === 0) {
 			Quiz.create({ 	pregunta: 'Capital de Italia',
