@@ -46,10 +46,10 @@ exports.answer = function (req, res) {
 exports.new = function (req, res) {
 	//crea objeto quiz
 	var quiz = models.Quiz.build(
-		{ pregunta: "Pregunta", respuesta: "Respuesta" }
+		{ pregunta: "Pregunta", respuesta: "Respuesta", tema: "Tema" }
 	);
 	
-	res.render('quizes/new', { quiz: quiz, errors: [] });
+	res.render('quizes/new', { quiz: quiz, temas: models.Categories, errors: [] });
 };
 
 // GET /quizes/create
@@ -58,10 +58,10 @@ exports.create = function (req, res) {
 	
 	quiz.validate().then(function(err) {
 		if (err) {
-			res.render('quizesK/new', {quiz: quiz, errors: err.errors});	
+			res.render('quizes/new', {quiz: quiz, temas: models.Categories, errors: err.errors});	
 		} else {
 			// guarda en DB los campos pregunta y respuesta de quiz
-			quiz.save({fields: ["pregunta", "respuesta"]})
+			quiz.save({fields: ["pregunta", "respuesta", "tema"]})
 			.then(function() {res.redirect('/quizes')});
 				// res.redirect: redicrección HTTP a lista de preguntas
 		}
@@ -70,26 +70,24 @@ exports.create = function (req, res) {
 
 // GET /quizes/:id/edit
 exports.edit = function (req, res) {
-	console.log('ENTRAMOS EN EDIT!!!!!!!!!!!!!!!!!!!!!!!!!')
 	var quiz = req.quiz; // autoload de instancia de quiz
 
-	res.render('quizes/edit', { quiz: quiz, errors: [] });
+	res.render('quizes/edit', { quiz: quiz, temas: models.Categories, errors: [] });
 };
 
 // PUT /quizes/:id
 exports.update = function(req, res) {
-	console.log('ENTRAMOS EN UPDATE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
 	req.quiz.pregunta = req.body.quiz.pregunta;
 	req.quiz.respuesta = req.body.quiz.respuesta;
+	req.quiz.tema = req.body.quiz.tema;
+	console.log('UPDATE: ' + req.quiz.tema);
 	
 	req.quiz.validate().then(function(err) {
 		if (err) {
-			res.render('quizes/edit', {quiz: req.quiz, errors: err.errors});
-			console.log('NO UPDATE!!!');
+			res.render('quizes/edit', {quiz: req.quiz, temas: models.Categories ,errors: err.errors});
 		} else {
-			console.log('UPDATE !!!!');
 			// save: guarda campos pregunta y respuesta en DB
-			req.quiz.save({fields: ["pregunta","respuesta"]})
+			req.quiz.save({fields: ["pregunta", "respuesta", "tema"]})
 			.then(function(){ res.redirect('/quizes');}); 
 				// Redirección HTTP a lista de preguntas (URL relativo)
 		}

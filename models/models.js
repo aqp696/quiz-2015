@@ -32,6 +32,12 @@ var Quiz = sequelize.import(path.join(__dirname,'quiz'));
 // Exportar definición de tabla Quiz
 exports.Quiz = Quiz;
 
+// Definición de temáticas de preguntas
+var Categories = ['otro', 'humanidades', 'ocio', 'ciencia', 'tecnologia'];
+
+// Exportar temáticas
+exports.Categories = Categories;
+
 // sequelize.sync() crea e inicializa tabla de preguntas DB
 sequelize.sync().success(function() {
 	// success(..) ejecuta el manejador una vez creada la tabla
