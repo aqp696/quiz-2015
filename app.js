@@ -40,17 +40,11 @@ app.use(function(req, res, next) {
     
     // Si se trata de un usuario logueado a cualquier ruta salvo /login y /logout
     if(!req.path.match(/\/login|\/logout/) && req.session.user) {
-        var elapsed = now.getTime()/1000 - stamp.getTime()/1000;
-        console.log("NEW ELAPSED: " + elapsed);
-        if (now.getSeconds() - stamp.getSeconds() >= 0) {
-            elapsed = now.getSeconds() - stamp.getSeconds();
-        } else {
-            elapsed = now.getSeconds() + (60 - stamp.getSeconds());
-        }
-    
+        var elapsed = Math.floor(now.getTime()/1000 - stamp.getTime()/1000);
          console.log('Tiempo transcurrido: ' + elapsed);
-         
-        if (elapsed > 10) {
+        
+        // Expira a los 2 minutos (120 segundos)
+        if (elapsed > 120) {
             // Tiempo expira
             console.log('Sesión caducada');
             var errors = 'Sesión caducada.';
