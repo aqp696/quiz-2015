@@ -51,7 +51,7 @@ app.use(function(req, res, next) {
             req.session.errors = [{"message": 'Sesión caducada'}];
             console.log('MW errors -> ' + errors);
             req.session.time = now;
-            res.redirect('/login');
+            res.redirect('/logout');
         } else {
             // Renovamos tiempo expiración
             console.log('Renovamos sesión');
