@@ -30,10 +30,48 @@ app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// MW with expire session in 2 minutes
+app.use(function(req, res, next) {
+    var now = new Date();
+    var stamp = req.session.time ? new Date(req.session.time):new Date();
+    console.log('STAMP: ' + stamp.getHours() + ':' + stamp.getMinutes() + ':' + stamp.getSeconds() );
+    console.log('NOW: ' + now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds() );
+    
+    // Si se trata de un usuario logueado a cualquier ruta salvo /login y /logout
+    if(!req.path.match(/\/login|\/logout/) && req.session.user) {
+        var elapsed;
+        if (now.getSeconds() - stamp.getSeconds() >= 0) {
+            elapsed = now.getSeconds() - stamp.getSeconds();
+        } else {
+            elapsed = now.getSeconds() + (60 - stamp.getSeconds());
+        }
+    
+         console.log('Tiempo transcurrido: ' + elapsed);
+         
+        if (elapsed > 10) {
+            // Tiempo expira
+            console.log('Sesión caducada');
+            var errors = 'Sesión caducada.';
+            req.session.errors = [{"message": 'Sesión caducada'}];
+            console.log('MW errors -> ' + errors);
+            req.session.time = now;
+            res.redirect('/login');
+        } else {
+            // Renovamos tiempo expiración
+            console.log('Renovamos sesión');
+            req.session.time = now;
+            next();
+        }
+    } else {
+        next();
+    }
+});
+
 // Helpers dinamicos
 app.use(function(req, res, next){
     
-    //guardar path en session.redir para despues de login
+    // guardar path en session.redir para despues de login
     if (!req.path.match(/\/login|\/logout/)) {
         req.session.redir = req.path;
     }

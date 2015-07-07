@@ -9,8 +9,11 @@ exports.loginRequired = function (req, res, next) {
 
 // GET /login	-- Formulario de login
 exports.new = function (req, res) {
+	console.log ('session_controller -> new');
+	console.log('BEFORE session.errors:' + req.session.errors);
 	var errors = req.session.errors || {};
 	req.session.errors = {};
+	console.log('AFTER session.errors:' + req.session.errors);
 	
 	res.render('sessions/new', {errors: errors});
 };
