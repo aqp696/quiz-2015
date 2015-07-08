@@ -46,12 +46,10 @@ app.use(function(req, res, next) {
          console.log('Tiempo transcurrido: ' + elapsed);
         
         // Expira a los 2 minutos (120 segundos)
-        if (elapsed > 10) {
+        if (elapsed > 120) {
             // Tiempo expira
             console.log('Sesión caducada');
-            var errors = 'Sesión caducada.';
             req.session.errors = [{"message": 'Sesión caducada'}];
-            console.log('MW errors -> ' + errors);
             req.session.time = now;
             session_expires = true;
             exports.session_expires = session_expires;
@@ -115,7 +113,5 @@ app.use(function(err, req, res, next) {
         errors: []
     });
 });
-
-
 
 module.exports = app;
