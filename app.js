@@ -12,6 +12,7 @@ var routes = require('./routes/index');
 
 
 var app = express();
+var session_expires = false;
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +32,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
 // MW with expire session in 2 minutes
 app.use(function(req, res, next) {
     var now = new Date();
@@ -44,17 +46,20 @@ app.use(function(req, res, next) {
          console.log('Tiempo transcurrido: ' + elapsed);
         
         // Expira a los 2 minutos (120 segundos)
-        if (elapsed > 120) {
+        if (elapsed > 10) {
             // Tiempo expira
             console.log('Sesión caducada');
             var errors = 'Sesión caducada.';
             req.session.errors = [{"message": 'Sesión caducada'}];
             console.log('MW errors -> ' + errors);
             req.session.time = now;
+            session_expires = true;
+            exports.session_expires = session_expires;
             res.redirect('/logout');
         } else {
             // Renovamos tiempo expiración
             console.log('Renovamos sesión');
+
             req.session.time = now;
             next();
         }
@@ -110,6 +115,7 @@ app.use(function(err, req, res, next) {
         errors: []
     });
 });
+
 
 
 module.exports = app;

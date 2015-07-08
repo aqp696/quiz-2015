@@ -1,4 +1,5 @@
 var models = require('../models/models.js');
+var app = require('../app.js');
 
 // Autoload - factoriza el código si ruta incluye :quizId
 exports.load = function (req, res, next, quizId) {
@@ -28,7 +29,18 @@ exports.index = function (req, res) {
 	}
 	
 	models.Quiz.findAll({where: ["pregunta like ?", search]}).then(function(quizes) {
-		res.render('quizes/index', {quizes: quizes, errors: []});
+		var errors = [];
+		console.log('LLEGAMOS AKI');
+		if (app.session_expires === true) {
+			console.log('quizes -> sesion expirada');
+			console.log('session_expires: ' + app.session_expires);
+			errors = [{"message": "Sesión caducada"}];
+			app.session_expires = false;
+		} else {
+			console.log('quizes -> sesion no expirada');
+			console.log('session_expires: ' + app.session_expires);
+		}
+		res.render('quizes/index', {quizes: quizes, errors: errors});
 	}).catch(function(error) { next(error); });
 
 };
